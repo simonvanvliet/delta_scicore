@@ -1,4 +1,5 @@
 import pathlib
+import json
 import delta.config as cfg
 from delta.utilities import xpreader
 from delta.pipeline import Pipeline
@@ -10,6 +11,10 @@ print(dev)
 def to_str(posixpath):
     return str(posixpath.resolve())   
 
+def save_config(cfg, posixpath):
+    with open(posixpath, 'w') as f:
+        json.dump(cfg, f, indent=2)
+    
 #set paths
 root = pathlib.Path(pathlib.Path.home(), 'home', 'delta')
 data_dir = root / 'data' 
@@ -23,9 +28,13 @@ output_path = root / 'processed'
 (output_path).mkdir(exist_ok=True) #create output data folder,  each position will be placed in a subfolder
 
 #get config file
-config_file = root / 'config_2D.json'
+config_file = root / 'delta_scicore' / 'config_2D.json'
 cfg.load_config(config_file)
 
+#set models
+cfg.model_file_seg = to_str(root / 'models' / "unet_pads_seg.hdf5")
+cfg.model_file_track = to_str(root / 'models' / "unet_pads_track.hdf5")
+ 
 #find files
 file_names = [f.name for f in sorted(data_dir.glob(filetype))]
 
@@ -41,6 +50,10 @@ for file in file_names:
 
     try:  
         print('starting with movie %s' %file) 
+                
+        #save config       
+        save_config(cfg, output_dir / 'config.json')
+
         # Init reader (use bioformats=True if working with nd2, czi, ome-tiff etc):
         im_reader = xpreader(to_str(data_dir / file), use_bioformats=True)
 
@@ -56,6 +69,7 @@ for file in file_names:
 
         # Run pipeline
         xp.process()
+        
         
     except:
         print('error with movie %s' %file) 

@@ -22,7 +22,7 @@ enter the following commands:
 
 ```bash
 ml Java/11.0.3_7
-conda create -n delta2_env cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel
+conda create -n delta2_env cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel pathlib json
 conda activate delta2_env
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/"
 pip install delta2
@@ -37,38 +37,12 @@ Note: this works on the A100 and RTX8000 partitions, for Pascal you will need `c
 cd ~/home
 mkdir delta
 cd delta
-git clone 
-
-
-## Using Jupyter
-
-Please see [here](https://wiki.biozentrum.unibas.ch/pages/viewpage.action?pageId=100829566) for detailed instructions on how to do this.
-In short:
-
-- make sure the conda environment is setup and that the data has been copied
-- prepare a bash script for the job (see the included  `GPUNotebook.sh`)
-  - Adapt partition if needed, see [here](https://wiki.biozentrum.unibas.ch/display/scicore/4.+Queues+and+partitions)
-  - Make sure to add the following lines:
-
-```bash
-ml Java/11.0.3_7
-ml FFmpeg
-eval "$(conda shell.bash hook)"
-conda activate delta2_env
-export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/"
-
-jupyter lab [name_of_notebook]
+git clone https://github.com/simonvanvliet/delta_scicore.git
 ```
 
-- submit a job via sbatch. i.e. `sbatch GPUNotebook.sh`
-- check if it has launched using `squeue -u [username]` (see [here](https://wiki.biozentrum.unibas.ch/display/scicore/10.+Monitoring) for details)
-- When launched open the output file called `JupLab-[job-id].oe` e.g. using vim: `vim JupLab-[job-id].oe`
-- Copy the ssh command to your **local** terminal
-- Open your browser and open the website `https://localhost:[port_nr]/lab?token=[token_nr]`
-  - See the output file for the port and token numbers
-- You should now be connected to the Jupyter session on the cluster
-- You can close vim using `esc` followed by `:q!`
-- **Important:** kill your job when your are done using it: `scancel [jobid]` or `scancel -u [username]`
-  - **warning:** `scancel -u [username]` kills all your jobs!
+## Setup Delta using Jupyter
 
-In case of problems: maybe you reconnected earlier on the same port. If so you can clear old sessions using `lsof -ti:[port_nr] | xargs kill -9` (run this on your local machine!)
+Follow instructions on [BZ Wiki](https://wiki.biozentrum.unibas.ch/x/LSX8Ew) to launch jupyter notebook
+
+Run the notebook `0_download_model_delta`
+
