@@ -41,12 +41,9 @@ cd delta
 git clone https://github.com/simonvanvliet/delta_scicore.git
 ```
 
+## download models
+
+```bash
 curl -o models.zip https://drive.switch.ch/index.php/s/Gv3TP8qhxvMyRfn/download
-unzip -q -j models.zip)
-
-## Setup Delta using Jupyter
-
-Follow instructions on [BZ Wiki](https://wiki.biozentrum.unibas.ch/x/LSX8Ew) to launch jupyter notebook
-
-Run the notebook `0_download_model_delta`
-
+unzip -q -j models.zip
+```
