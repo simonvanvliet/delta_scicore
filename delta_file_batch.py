@@ -3,6 +3,7 @@ import json
 import delta.config as cfg
 from delta.utilities import xpreader
 from delta.pipeline import Pipeline
+from delta_postprocess import delta_to_df 
 import tensorflow as tf
 
 dev = tf.config.list_physical_devices()
@@ -38,7 +39,7 @@ cfg.model_file_track = to_str(root / 'models' / "unet_pads_track.hdf5")
 #find files
 file_names = [f.name for f in sorted(data_dir.glob(filetype))]
 
-for file in file_names:
+for idx, file in enumerate(file_names):
 
     #make nickname of movie
     end = file.find(short_name_regexp)
@@ -70,6 +71,16 @@ for file in file_names:
         # Run pipeline
         xp.process()
         
+        # postprocess
+        datafiles = [f.name for f in sorted((output_dir).glob('*.pkl'))]
+                
+        df = delta_to_df(output_dir / datafiles[0])
+        df['movie_name'] = file_name_short
+        df['replicate'] = idx
+        
+        #save data-frame
+        save_name = file_name_short + '.csv'
+        df.to_csv(output_dir / save_name)
         
     except:
         print('error with movie %s' %file) 

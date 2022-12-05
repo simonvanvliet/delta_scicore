@@ -22,11 +22,12 @@ enter the following commands:
 
 ```bash
 ml Java/11.0.3_7
-conda create -n delta2_env cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel pathlib json
+conda create -n delta2_env cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel 
 conda activate delta2_env
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/"
 pip install delta2
 pip install elasticdeform
+conda install -c conda-forge pathlib json numpy pandas scikit-image
 ```
 
 Note: this works on the A100 and RTX8000 partitions, for Pascal you will need `cudatoolkit=10`

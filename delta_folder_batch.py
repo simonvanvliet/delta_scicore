@@ -3,6 +3,7 @@ import json
 import delta.config as cfg
 from delta.utilities import xpreader
 from delta.pipeline import Pipeline
+from delta_postprocess import delta_to_df 
 import tensorflow as tf
 
 dev = tf.config.list_physical_devices()
@@ -46,7 +47,7 @@ for folder in folder_names:
     output_path = output_root / folder.name
     (output_path).mkdir(exist_ok=True) #create output data folder,  each position will be placed in a subfolder
 
-    for movie in movie_names:        
+    for idx, movie in enumerate(movie_names):        
         #path to current position
         movie_dir = folder / movie
         
@@ -79,6 +80,14 @@ for folder in folder_names:
 
             # Run pipeline
             xp.process()
+            
+            # postprocess
+            datafiles = [f.name for f in sorted((output_dir).glob('*.pkl'))]
+                    
+            df = delta_to_df(output_dir / datafiles[0])
+            df['condition'] = folder
+            df['movie_name'] = movie_name_short
+            df['replicate'] = idx
             
         except:
             print('error with movie %s->%s, skipping to next' %(folder.name, movie_name_short)) 
