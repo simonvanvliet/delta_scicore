@@ -27,7 +27,7 @@ conda activate delta2_env
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/"
 pip install delta2
 pip install elasticdeform
-conda install -c conda-forge pathlib json numpy pandas scikit-image
+conda install -c conda-forge pathlib numpy pandas scikit-image
 ```
 
 Note: this works on the A100 and RTX8000 partitions, for Pascal you will need `cudatoolkit=10`
