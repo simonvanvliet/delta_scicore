@@ -12,10 +12,6 @@ print(dev)
 def to_str(posixpath):
     return str(posixpath.resolve())   
 
-def save_config(cfg, posixpath):
-    with open(posixpath, 'w') as f:
-        json.dump(cfg, f, indent=2)
-
 #set paths
 root = pathlib.Path(pathlib.Path.home(), 'home', 'delta')
 data_dir = root / 'data' 
@@ -61,9 +57,6 @@ for folder in folder_names:
 
         try:  
             print('starting with movie %s->%s' %(folder.name, movie_name_short)) 
-            
-            #save config       
-            save_config(cfg, output_dir / 'config.json')
         
             # Init reader (use bioformats=True if working with nd2, czi, ome-tiff etc):
             im_reader = xpreader(movie_dir, use_bioformats=True)

@@ -21,13 +21,10 @@ Run  `conda init [shell_name]` where `shell_name` is the type of shell used by t
 enter the following commands:
 
 ```bash
-ml Java/11.0.3_7
-conda create -n delta2_env cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel 
+module purge
+conda create -n delta2_env -c conda-forge cudnn=8 cudatoolkit=11 python=3.9 jupyterlab ipykernel openjdk ffmpeg pathlib pandas
 conda activate delta2_env
-export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/"
-pip install delta2
-pip install elasticdeform
-conda install -c conda-forge pathlib numpy pandas scikit-image
+pip install delta2 elasticdeform  bioformats
 ```
 
 Note: this works on the A100 and RTX8000 partitions, for Pascal you will need `cudatoolkit=10`
@@ -44,6 +41,7 @@ git clone https://github.com/simonvanvliet/delta_scicore.git
 ## download models
 
 ```bash
+cd ~/home/delta
 curl -o models.zip https://drive.switch.ch/index.php/s/Gv3TP8qhxvMyRfn/download
 unzip -q -j models.zip
 ```
