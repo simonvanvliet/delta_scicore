@@ -82,6 +82,11 @@ for folder in folder_names:
             df['movie_name'] = movie_name_short
             df['replicate'] = idx
             
+            #save data-frame
+            save_name = movie_name_short + '.csv'
+            df.to_csv(output_dir / save_name)
+        
+            
         except:
             print('error with movie %s->%s, skipping to next' %(folder.name, movie_name_short)) 
 
